@@ -1,14 +1,13 @@
 module controller(
     input logic clk,
     input logic command[11:0],
-    output logic op_code[2:0],
+    output logic alu_op_code[2:0],
     output logic alu_a[31:0],
     output logic alu_b[31:0],
-    output logic alu_op_code[3:0]
 )
     
 
-logic reset, enable, [7:0]q, [7:0]d, [7:0]reset, [7:0]enable;
+logic reset, enable, [7:0]q, [7:0]d, [7:0]reset = 0, [7:0]enable = 0;
 //instantiate the memory module
 memory mem[7:0](
     .d(d),
@@ -25,7 +24,10 @@ addr3 = command[2:0] // addresses in memory
 
 case (command)[11:9]
     3'b000: begin // ADD
-        
+        alu_a = memory[addr1];
+        alu_b = memory[addr2];
+        alu_op_code = 3'b000;
+
     end
     3'b001: begin // SUB
         op_code = 3'b001;
