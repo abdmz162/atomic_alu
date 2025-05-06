@@ -41,7 +41,6 @@ case (command)[11:9]
     end
     default: begin // NOP
         op_code = 3'b111;
-        d = 8'b00000000;
     end
 
 endcase
