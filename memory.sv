@@ -1,16 +1,11 @@
-module memory(
-    input logic d[31:0], q[31:0],
-    input logic clk, reset, enable
-)
-always_ff @(posedge clk) begin
-    if (reset) begin
-        q <= 32'b0; // Reset the output to zero
-    end else if (enable) begin
-         q <= d; // Load data into the output on the rising edge of the clock
-    end else begin
-        q <= 0; // Maintain the current value if not enabled
-    end
-end
+module 32_bit_register (
+    input  logic        clk,   // clock input
+    input  logic [31:0]  d = 32'h0,     // 32-bit data input
+    output logic [31:0]  q = 32'h0      // 32-bit output
+);
 
+    always_ff @(posedge clk) begin
+            q <= d;        // Update register when enable is high
+    end
 
 endmodule

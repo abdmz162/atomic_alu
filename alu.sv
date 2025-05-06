@@ -14,15 +14,15 @@ always_comb
         
         case (op_code)
             
-            4'b0000:begin//add
+            3'b000:begin//add
                 y = a + b;
             end
             
-            4'b0001:begin//subt
+            3'b001:begin//subt
                 y= a - b;
             end
             
-            4'b0010:begin//increment
+            3'b010:begin//increment
                 y = a + 1;
                 if (Z) begin
                     C = 1; 
@@ -32,10 +32,10 @@ always_comb
                 end
             end
 
-            4'b0011:begin y=a&b; C=0; O=0;end //b_and 
-            4'b0100:begin y=a|b; C=0; O=0;end //b_or 
-            4'b0101:begin y=a^b; C=0; O=0;end //b_xor
-            4'b0110:begin y=~a; C=0; O=0;end //b_not
+            3'b011:begin y=a&b; C=0; O=0;end //b_and 
+            3'b100:begin y=a|b; C=0; O=0;end //b_or 
+            3'b101:begin y=a^b; C=0; O=0;end //b_xor
+            3'b110:begin y=~a; C=0; O=0;end //b_not
             default:begin  y=0; C=0; O=0;end //default
         
         endcase
