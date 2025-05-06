@@ -5,17 +5,8 @@ module controller(
     output logic alu_a[31:0],
     output logic alu_b[31:0],
 )
-    
 
-logic reset, enable, [7:0]q, [7:0]d, [7:0]reset = 0, [7:0]enable = 0;
-//instantiate the memory module
-memory mem[7:0](
-    .d(d),
-    .q(q),
-    .clk(clk),
-    .reset(reset),
-    .enable(enable)
-);
+[7:0] mem = 
 //decode the commands
 instruction = command[11:9]
 addr1 = command[8:6] // addresses in memory
@@ -30,20 +21,23 @@ case (command)[11:9]
 
     end
     3'b001: begin // SUB
-        op_code = 3'b001;
-        d = q[addr1] - q[addr2];
+        alu_a = memory[addr1];
+        alu_b = memory[addr2];
+        alu_op_code = 3'001;
     end
     3'b010: begin // AND
-        op_code = 3'b010;
-        d = q[addr1] & q[addr2];
+        alu_a = memory[addr1];
+        alu_b = memory[addr2];
+        alu_op_code = 3'010;
     end
     3'b011: begin // OR
-        op_code = 3'b011;
-        d = q[addr1] | q[addr2];
+        alu_a = memory[addr1];
+        alu_b = memory[addr2];
+        alu_op_code = 3'011;
     end
     3'b100: begin // NOT
-        op_code = 3'b100;
-        d = ~q[addr1];
+        alu_a = memory[addr1];
+        alu_op_code = 3'100;
     end
     default: begin // NOP
         op_code = 3'b111;
