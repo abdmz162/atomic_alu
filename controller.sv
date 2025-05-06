@@ -6,7 +6,7 @@ module controller(
     output logic alu_b[31:0],
 )
 
-[7:0] mem = 
+logic [7:0] mem [31:0];
 //decode the commands
 instruction = command[11:9]
 addr1 = command[8:6] // addresses in memory
