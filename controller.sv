@@ -7,8 +7,20 @@ module controller(
     output logic [31:0]alu_b
 );
 
+inital begin
+    //implement hex file stuff
+endz
 //declaring logic
-logic alu_a,alu_b,alu_op_code,instruction,addr1,addr2,addr3;
+logic [2:0] alu_a,alu_b,alu_op_code,instruction,addr1,addr2,addr3;
+logic [31:0] d [7:0]; // 8 registers of 32 bits each
+logic [31:0] q [7:0]; // 8 registers of 32 bits each
+
+bit_32_register memory[7:0](
+    .clk(clk),
+    .d(d)
+    .q(q)
+); // 8 registers of 32 bits each
+
 
 //decode the commands
 instruction = command[11:9];
@@ -20,8 +32,8 @@ addr3 = command[2:0]; // addresses in memory
 alwways_ff @(posedge syscall)begin//and ready
     
     if(command!=3'b111)begin        
-        alu_a = memory[addr1];
-        alu_b = memory[addr2];
+        alu_a = q[addr1]; // read from memory
+        alu_b = q[addr2]; // read from memory
         alu_op_code=instruction;
     end
 
