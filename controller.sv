@@ -3,15 +3,17 @@ module controller(
     input logic command[11:0],
     output logic alu_op_code[2:0],
     output logic alu_a[31:0],
-    output logic alu_b[31:0],
-)
+    output logic alu_b[31:0]
+);
 
+logic alu_a,instruction,addr1,addr2,addr3;
 logic [7:0] mem [31:0];
+
 //decode the commands
-instruction = command[11:9]
-addr1 = command[8:6] // addresses in memory
-addr2 = command[5:3] // addresses in memory
-addr3 = command[2:0] // addresses in memory
+instruction = command[11:9];
+addr1 = command[8:6]; // addresses in memory
+addr2 = command[5:3]; // addresses in memory
+addr3 = command[2:0]; // addresses in memory
 
 case (command)[11:9]
     3'b000: begin // ADD
