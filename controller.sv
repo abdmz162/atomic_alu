@@ -29,7 +29,7 @@ addr2 = command[5:3]; // addresses in memory
 addr3 = command[2:0]; // addresses in memory
 
 
-alwways_ff @(posedge syscall)begin//and ready
+alwways_ff @(posedge syscall)begin
     
     if(command!=3'b111)begin        
         alu_a = q[addr1]; // read from memory
