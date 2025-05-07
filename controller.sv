@@ -1,8 +1,10 @@
 module controller(
     input logic clk,
+    input logic y,
     input logic [11:0]command,
     input logic syscall,//RUN fr
     output logic [2:0]alu_op_code
+    output logic [31:0] data_a,data_b
 );
 
     logic [31:0] registers [0:7];  // 8 sv registers of 32-bit width
@@ -15,10 +17,6 @@ module controller(
         end
 
     end
-
-    logic [31:0]data_a,data_b,output_a,ouput_b;
-    bit_32_register alu_a(.clk(clk),.d(data_a),.q(output_a));
-    bit_32_register alu_b(.clk(clk),.d(data_b),.q(output_b));
 
     //declaring logic
     logic [2:0] alu_op_code,instruction,addr1,addr2,addr3;
@@ -38,12 +36,12 @@ module controller(
     addr2 = command[5:3]; // addresses in memory
     addr3 = command[2:0]; // addresses in memory
 
-
+    q[7]=y//7 address is restricted for output only
     alwways_ff @(posedge syscall)begin//and ready
         if(command!=3'b111)begin        
-            data_a <= q[addr1]; // read from memory
-            data_b <= q[addr2]; // read from memory
-            alu_op_code <= instruction;
+            data_a = q[addr1]; // read from memory
+            data_b = q[addr2]; // read from memory
+            alu_op_code = instruction;
         end
     end
 
