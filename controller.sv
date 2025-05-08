@@ -1,6 +1,6 @@
 module controller(
     input logic clk,
-    input logic [11:0]command,
+    input logic [11:0] command,
     input logic syscall,//RUN
     input logic O, C, Z, N,
     output logic [2:0] alu_op_code,
