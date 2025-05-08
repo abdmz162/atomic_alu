@@ -50,9 +50,10 @@ module controller(
             if Z begin
                 d[addr3] <= data_a;
                 d[addr1] <= q[addr2];
-                y <= 32'b1;
-            end else
+                d[7] <= 32'b1;
+            end else begin
                 d[7] <= 32'b0;
+            end
         end
     end
 
