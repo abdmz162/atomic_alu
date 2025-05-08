@@ -1,10 +1,8 @@
 module controller(
     input logic clk,
-    input logic y,
     input logic [11:0]command,
     input logic syscall,//RUN
     input logic O, C, Z, N,
-    input logic [31:0] y
     output logic [2:0] alu_op_code,
     output logic [31:0] data_a, data_b
 );
