@@ -3,6 +3,7 @@ module controller(
     input logic [11:0] command,
     input logic syscall,//RUN
     input logic O, C, Z, N,
+    input logic [31:0] y,
     output logic [2:0] alu_op_code,
     output logic [31:0] data_a, data_b
 );
@@ -42,6 +43,7 @@ module controller(
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
+            d[7] = y;
         end else begin      // CAS operation
             data_a <= q[addr1];
             data_b <= q[addr3];

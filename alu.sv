@@ -3,7 +3,8 @@ module alu(
     input  logic [31:0] b, 
     input  logic [3:0]  op_code, 
     output logic O, C, Z, N, 
-    output logic [31:0] y);
+    output logic [31:0] y
+    );
     
     always_comb
         begin
