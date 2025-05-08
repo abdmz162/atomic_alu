@@ -14,6 +14,8 @@ module controller(
     logic [31:0] d [7:0]; // 32 bit data for 8 registers
     logic [31:0] q [7:0]; // 32 bit output of 8 registers
     logic [31:0] data_a, data_b;
+    logic [7:0] writeEnables;
+
 
     inital begin
         $readmemh("register_init.hex", registers);
@@ -27,7 +29,8 @@ module controller(
     bit_32_register memory[7:0](
         .clk(clk),
         .d(d),
-        .q(q)
+        .q(q),
+        .writeEnable(writeEnables)
     );
 
     always_comb begin
@@ -38,8 +41,12 @@ module controller(
         addr3 = command[2:0]; // addresses in memory
     end
 
-    alwways_ff @(posedge syscall)begin // And ready
-        if(command!=3'b111)begin    // All other operations    
+    always_ff @(posedge syscall) begin // And ready
+        writeEnable[addr1] = 0; // Disable write to all registers
+        writeEnable[addr2] = 0; // Disable write to all registers
+        writeEnable[addr3] = 0; // Disable write to all registers
+
+        if(command!=3'b111) begin    // All other operations    
             ready <= 0;
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
@@ -54,14 +61,19 @@ module controller(
             op_code <= 001; // Subtract
             @(posedge clk)
             if Z begin
-                d[addr3] <= data_a;
-                d[addr1] <= q[addr2];
+                writeEnable[addr3] = 1;
+                writeEnable[addr1] = 1;
+                d[addr3] <= data_a;         // Swapping logic
+                d[addr1] <= q[addr2];       // Swapping logic
                 d[7] <= 32'b1;
             end else begin
                 d[7] <= 32'b0;
             end
             ready <= 1;
         end
+        writeEnable[addr1] = 1; // Enable write to register 1
+        writeEnable[addr2] = 1; // Enable write to register 2
+        writeEnable[addr3] = 1; // Enable write to register 3
     end
 
 endmodule
