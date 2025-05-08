@@ -9,7 +9,6 @@ module controller(
 );
 
     logic [31:0] registers [0:7];  // 8 sv registers of 32-bit width
-    logic [7:0] writeEnables;
 
     inital begin
         $readmemh("register_init.hex", registers);
@@ -28,42 +27,32 @@ module controller(
     bit_32_register memory[7:0](
         .clk(clk),
         .d(d),
-        .q(q),
-        .writeEnable(writeEnables)
+        .q(q)
     );
 
     always_comb begin
     //decode the commands
-    instruction = command[11:9];
-    addr1 = command[8:6]; // addresses in memory
-    addr2 = command[5:3]; // addresses in memory
-    addr3 = command[2:0]; // addresses in memory
+    instruction <= command[11:9];
+    addr1 <= command[8:6]; // addresses in memory
+    addr2 <= command[5:3]; // addresses in memory
+    addr3 <= command[2:0]; // addresses in memory
     end
 
-    alwways_ff @(posedge syscall)begin//and ready
+    alwways_ff @(posedge syscall)begin // And ready
         if(command!=3'b111)begin    // All other operations    
-            writeEnable[addr1] = 0;
-            writeEnable[addr2] = 0;
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
         end else begin      // CAS operation
-            writeEnable[addr1] = 0;
-            writeEnable[addr2] = 0;
-            writeEnable[addr3] = 0;
             data_a <= q[addr1];
             data_b <= q[addr3];
-            op_code = 001; // Subtract
-            @posedge
+            op_code <= 001; // Subtract
             if Z begin
-                writeEnable[addr3] = 1;
-                d[addr3] <= data_a; //something like that i forgot
-                y = 32'b1;
+                d[addr3] <= data_a;
+                d[addr1] <= q[addr2];
+                y <= 32'b1;
             end else
-                y = 32'b0;
-        end
-        for (i = 0, i < 8, i++) begin
-            writeEnable[i] = 1
+                y <= 32'b0;
         end
     end
 
