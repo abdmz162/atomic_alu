@@ -7,7 +7,7 @@ module controller(
     output logic [31:0] data_a, data_b
 );
 
-    logic [31:0] registers [0:7];  // 8 sv registers of 32-bit width
+    logic [31:0] registers [0:7];  // 8 registers of 32-bit width
 
     inital begin
         $readmemh("register_init.hex", registers);
