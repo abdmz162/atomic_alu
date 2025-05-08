@@ -17,9 +17,9 @@ module controller(
     logic [7:0] writeEnables;
 
 
-    inital begin
+    initial begin
         $readmemh("register_init.hex", registers);
-        for(i=0;i<8;i++) begin
+        for(int i=0;i<8;i++) begin
             d[i] = registers[i];
         end
     end
@@ -51,14 +51,14 @@ module controller(
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
-            d[7] = y;
+            d[7] <= y;
             ready <= 1;
 
         end else begin      // CAS operation
             ready <= 0;
             data_a <= q[addr1];
             data_b <= q[addr3];
-            op_code <= 001; // Subtract
+            alu_op_code <= 001; // Subtract
             @(posedge clk)
             if (Z) begin
                 writeEnable[addr3] = 1;
