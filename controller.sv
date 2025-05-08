@@ -52,7 +52,7 @@ module controller(
                 d[addr1] <= q[addr2];
                 y <= 32'b1;
             end else
-                y <= 32'b0;
+                d[7] <= 32'b0;
         end
     end
 
