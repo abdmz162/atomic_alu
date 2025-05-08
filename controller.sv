@@ -1,5 +1,6 @@
 module controller(
     input logic clk,
+    input logic y,
     input logic [11:0]command,
     input logic syscall,//RUN
     input logic O, C, Z, N,
