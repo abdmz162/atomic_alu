@@ -7,8 +7,13 @@ module controller(
     output logic [2:0] alu_op_code,
     output logic [31:0] data_a, data_b
 );
+    // Declaring logic
     logic ready;
     logic [31:0] registers [0:7];  // 8 registers of 32-bit width
+    logic [2:0] instruction,addr1,addr2,addr3;
+    logic [31:0] d [7:0]; // 32 bit data for 8 registers
+    logic [31:0] q [7:0]; // 32 bit output of 8 registers
+    logic [31:0] data_a, data_b;
 
     inital begin
         $readmemh("register_init.hex", registers);
@@ -17,12 +22,7 @@ module controller(
         end
     end
 
-    logic [31:0] data_a, data_b
 
-    // Declaring logic
-    logic [2:0] alu_op_code,instruction,addr1,addr2,addr3;
-    logic [31:0] d [7:0]; // 32 bit data for 8 registers
-    logic [31:0] q [7:0]; // 32 bit output of 8 registers
 
     bit_32_register memory[7:0](
         .clk(clk),
@@ -31,11 +31,11 @@ module controller(
     );
 
     always_comb begin
-    //decode the commands
-    instruction <= command[11:9];
-    addr1 <= command[8:6]; // addresses in memory
-    addr2 <= command[5:3]; // addresses in memory
-    addr3 <= command[2:0]; // addresses in memory
+        //decode the commands
+        instruction = command[11:9];
+        addr1 = command[8:6]; // addresses in memory
+        addr2 = command[5:3]; // addresses in memory
+        addr3 = command[2:0]; // addresses in memory
     end
 
     alwways_ff @(posedge syscall)begin // And ready
