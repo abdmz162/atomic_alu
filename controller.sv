@@ -41,7 +41,7 @@ module controller(
         addr3 = command[2:0]; // addresses in memory
     end
 
-    always_ff @(posedge syscall) begin // And ready
+    always @(posedge syscall) begin // And ready
         writeEnable[addr1] = 0; // Disable write to all registers
         writeEnable[addr2] = 0; // Disable write to all registers
         writeEnable[addr3] = 0; // Disable write to all registers
