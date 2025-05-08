@@ -13,7 +13,7 @@ module topmodule(
     bit_32_register alu_a_register(.clk(clk), .d(data_a), .q(output_a));
     bit_32_register alu_b_register(.clk(clk), .d(data_b), .q(output_b));
 
-    controller ctrl( .clk(clk), .command(command), .syscall(run), .alu_op_code(op_code), .data_a(data_a), .data_b(data_b), .y(y), .O(O), .C(C), .Z(Z), .N(N));
+    controller ctrl( .clk(clk), .command(command), .syscall(run), .alu_op_code(op_code), .data_a(data_a), .data_b(data_b), .y(y), .Z(Z));
     alu top_alu(.a(output_a), .b(output_b), .op_code(op_code), .O(O), .C(C), .Z(Z), .N(N), .y(y));
 
 
