@@ -3,7 +3,6 @@ module topmodule(
     input clk,
     input run
     );
-    
 
     logic [31:0] data_a, data_b;
     logic [31:0] output_a, output_b;
