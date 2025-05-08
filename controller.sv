@@ -8,7 +8,7 @@ module controller(
     output logic [31:0] data_a, data_b
 );
     // Declaring logic
-    logic ready=1;
+    logic ready = 1;
     logic [31:0] registers [0:7];  // 8 registers of 32-bit width
     logic [2:0] instruction,addr1,addr2,addr3;
     logic [31:0] d [7:0]; // 32 bit data for 8 registers
@@ -60,7 +60,7 @@ module controller(
             data_b <= q[addr3];
             op_code <= 001; // Subtract
             @(posedge clk)
-            if Z begin
+            if (Z) begin
                 writeEnable[addr3] = 1;
                 writeEnable[addr1] = 1;
                 d[addr3] <= data_a;         // Swapping logic

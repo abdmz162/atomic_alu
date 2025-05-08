@@ -7,11 +7,11 @@ module bit_32_register (
 );
 
     always_ff @(posedge clk) begin
-        if writeEnable begin
+        if (writeEnable) begin
             q <= d;    
         end    // Update register when enable is high
-    end else begin
-        q <= q;
+        else begin
+            q <= q;
+        end
     end
-
 endmodule

@@ -1,7 +1,7 @@
 module alu(
     input  logic [31:0] a, 
     input  logic [31:0] b, 
-    input  logic [3:0]  op_code, 
+    input  logic [3:0] op_code, 
     output logic O, C, Z, N, 
     output logic [31:0] y
     );
