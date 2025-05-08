@@ -12,25 +12,23 @@ module controller(
     logic [7:0] writeEnables;
 
     inital begin
-        
         $readmemh("register_init.hex", registers);
-        for(i=0;i<8;i++)begin
+        for(i=0;i<8;i++) begin
             d[i] = registers[i];
         end
-
     end
 
     logic [31:0] data_a, data_b
 
-    //declaring logic
+    // Declaring logic
     logic [2:0] alu_op_code,instruction,addr1,addr2,addr3;
     logic [31:0] d [7:0]; // 32 bit data for 8 registers
     logic [31:0] q [7:0]; // 32 bit output of 8 registers
 
     bit_32_register memory[7:0](
         .clk(clk),
-        .d(d)
-        .q(q)
+        .d(d),
+        .q(q),
         .writeEnable(writeEnables)
     );
 
@@ -44,24 +42,28 @@ module controller(
 
     alwways_ff @(posedge syscall)begin//and ready
         if(command!=3'b111)begin    // All other operations    
-            writeEnable[addr1] = 0
-            writeEnable[addr2] = 0
+            writeEnable[addr1] = 0;
+            writeEnable[addr2] = 0;
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
         end else begin      // CAS operation
-            writeEnable[addr1] = 0
-            writeEnable[addr2] = 0
-            writeEnable[addr3] = 0
-            data_a <= q[addr1]
-            data_b <= q[addr2]
-            op_code = 001
+            writeEnable[addr1] = 0;
+            writeEnable[addr2] = 0;
+            writeEnable[addr3] = 0;
+            data_a <= q[addr1];
+            data_b <= q[addr3];
+            op_code = 001; // Subtract
             @posedge
             if Z begin
-                writeEnable[addr3] = 1
-                d[addr3] <= data_a //something like that i forgot
-                y = 32'b1
-            end
+                writeEnable[addr3] = 1;
+                d[addr3] <= data_a; //something like that i forgot
+                y = 32'b1;
+            end else
+                y = 32'b0;
+        end
+        for (i = 0, i < 8, i++) begin
+            writeEnable[i] = 1
         end
     end
 
