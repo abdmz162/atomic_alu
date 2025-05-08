@@ -47,6 +47,7 @@ module controller(
             data_a <= q[addr1];
             data_b <= q[addr3];
             op_code <= 001; // Subtract
+            @posedge
             if Z begin
                 d[addr3] <= data_a;
                 d[addr1] <= q[addr2];
