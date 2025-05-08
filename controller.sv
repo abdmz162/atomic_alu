@@ -7,7 +7,7 @@ module controller(
     output logic [2:0] alu_op_code,
     output logic [31:0] data_a, data_b
 );
-
+    logic ready;
     logic [31:0] registers [0:7];  // 8 registers of 32-bit width
 
     inital begin
@@ -40,11 +40,15 @@ module controller(
 
     alwways_ff @(posedge syscall)begin // And ready
         if(command!=3'b111)begin    // All other operations    
+            ready <= 0;
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
             d[7] = y;
+            ready <= 1;
+
         end else begin      // CAS operation
+            ready <= 0;
             data_a <= q[addr1];
             data_b <= q[addr3];
             op_code <= 001; // Subtract
@@ -56,6 +60,7 @@ module controller(
             end else begin
                 d[7] <= 32'b0;
             end
+            ready <= 1;
         end
     end
 
