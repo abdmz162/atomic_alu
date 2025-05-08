@@ -1,11 +1,15 @@
 module controller(
     input logic clk,
     input logic [11:0]command,
-    input logic syscall,//RUN fr
-    output logic [2:0]alu_op_code
+    input logic syscall,//RUN
+    input logic O, C, Z, N,
+    input logic [31:0] y
+    output logic [2:0] alu_op_code,
+    output logic [31:0] data_a, data_b
 );
 
     logic [31:0] registers [0:7];  // 8 sv registers of 32-bit width
+    logic [7:0] writeEnables;
 
     inital begin
         
@@ -16,9 +20,7 @@ module controller(
 
     end
 
-    logic [31:0]data_a,data_b,output_a,ouput_b;
-    bit_32_register alu_a(.clk(clk),.d(data_a),.q(output_a));
-    bit_32_register alu_b(.clk(clk),.d(data_b),.q(output_b));
+    logic [31:0] data_a, data_b
 
     //declaring logic
     logic [2:0] alu_op_code,instruction,addr1,addr2,addr3;
@@ -29,21 +31,37 @@ module controller(
         .clk(clk),
         .d(d)
         .q(q)
+        .writeEnable(writeEnables)
     );
 
-
+    always_comb begin
     //decode the commands
     instruction = command[11:9];
     addr1 = command[8:6]; // addresses in memory
     addr2 = command[5:3]; // addresses in memory
     addr3 = command[2:0]; // addresses in memory
-
+    end
 
     alwways_ff @(posedge syscall)begin//and ready
-        if(command!=3'b111)begin        
+        if(command!=3'b111)begin    // All other operations    
+            writeEnable[addr1] = 0
+            writeEnable[addr2] = 0
             data_a <= q[addr1]; // read from memory
             data_b <= q[addr2]; // read from memory
             alu_op_code <= instruction;
+        end else begin      // CAS operation
+            writeEnable[addr1] = 0
+            writeEnable[addr2] = 0
+            writeEnable[addr3] = 0
+            data_a <= q[addr1]
+            data_b <= q[addr2]
+            op_code = 001
+            @posedge
+            if Z begin
+                writeEnable[addr3] = 1
+                d[addr3] <= data_a //something like that i forgot
+                y = 32'b1
+            end
         end
     end
 
