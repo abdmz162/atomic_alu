@@ -1,4 +1,4 @@
-module controller(
+module state_based_controller(
     input  logic clk,
     input  logic [11:0] command,
     input  logic syscall, // RUN signal

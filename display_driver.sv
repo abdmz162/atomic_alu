@@ -34,7 +34,7 @@ module seven_seg_display_driver (
         if (rst) begin
             clk_count <= 0;
             clk_800Hz <= 0;
-        end else if (clk_count == 62500) begin // 50MHz / 62500 / 2 = 400Hz (for both edges)
+        end else if (clk_count == 62500) begin // 100MHz / 62500 / 2 = 800Hz (for both edges)
             clk_count <= 0;
             clk_800Hz <= ~clk_800Hz;
         end else begin
