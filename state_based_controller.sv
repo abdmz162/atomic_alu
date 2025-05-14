@@ -20,7 +20,6 @@ module state_based_controller(
     logic [11:0] command_reg;
     logic syscall_latched;
 
-    // Initialize from file if available, otherwise use default 0s
     initial begin
         $readmemh("register_init.hex", registers);
         // If you want to verify the initialization, you could add:
