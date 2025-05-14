@@ -5,7 +5,8 @@ module state_based_controller(
     input  logic Z,
     input  logic [31:0] y,
     output logic [2:0] alu_op_code,
-    output logic [31:0] data_a, data_b
+    output logic [31:0] data_a, data_b,
+    output logic [31:0] register_out_7
 );
 
     typedef enum logic [2:0] {
@@ -22,6 +23,9 @@ module state_based_controller(
     initial begin
         $readmemh("register_init.hex", registers);
     end
+
+    // Output register for register 7
+    assign register_out_7 = registers[7];
 
     // Latch syscall and command only when in IDLE
     always_ff @(posedge clk) begin

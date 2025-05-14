@@ -63,6 +63,8 @@ module seven_seg_display_driver (
             4'hF: seg_out = 7'b0001110;
             default: seg_out = 7'b1111111; // Blank
         endcase
+        //{segG, segF, segE, segD, segC, segB, segA} = seg_out;
+
     end
 
 endmodule
