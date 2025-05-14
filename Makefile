@@ -1,11 +1,11 @@
-# Makefile for QuestaSim/ModelSim with waveform viewing
+# Makefile for QuestaSim
 
 # Variables
 VLOG = vlog
 VSIM = vsim
 WORK = work
-TB = topmodule_tb           # Your main testbench
-DISPLAY_TB = tb_seven_seg_display_driver  # Display driver testbench
+TB = topmodule_tb           # our main testbench
+DISPLAY_TB = tb_seven_seg_display_driver  # display_driver testbench
 SRC = alu.sv controller.sv display_driver.sv memory.sv state_based_controller.sv topmodule.sv
 HEX_FILE = register_init.hex
 WAVEFORM_DO = wave.do      # Waveform configuration file
@@ -40,3 +40,5 @@ clean:
 
 # Shortcut for quick simulation
 run: compile simulate
+
+
