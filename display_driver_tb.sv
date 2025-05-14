@@ -21,10 +21,7 @@ module tb_seven_seg_display_driver;
     initial begin
         // Initialize signals
         number = 32'h00000000;
-
-        // Hold reset briefly
-
-        // Load test number (DEADBEEF)
+        #100
         number = 32'hDEADBEEF;
         #100
         number = 32'h12345678;
@@ -32,7 +29,7 @@ module tb_seven_seg_display_driver;
         number = 32'h87654321;
         #100
         number = 32'hFFFFFFFF;
-        #100
+        
     end
 
 endmodule
