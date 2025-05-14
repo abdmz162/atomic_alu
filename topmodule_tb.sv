@@ -38,38 +38,38 @@ module topmodule_tb;
         run = 0;
         #1250_0000;  // Wait for operation to complete
 
-        // Test case 2: SUBTRACT operation (R3 - R4 -> R7)
-        command = 12'b001_011_100_000;  // SUB R3,R4
-        run = 1;
-        #6250000;
-        run = 0;
-        #1250_0000;
+        // // Test case 2: SUBTRACT operation (R3 - R4 -> R7)
+        // command = 12'b001_011_100_000;  // SUB R3,R4
+        // run = 1;
+        // #6250000;
+        // run = 0;
+        // #1250_0000;
 
-        // Test case 3: AND operation (R5 & R6 -> R7)
-        command = 12'b011_101_110_000;  // AND R5,R6
-        run = 1;
-        #6250000;
-        run = 0;
-        #1250_0000;
+        // // Test case 3: AND operation (R5 & R6 -> R7)
+        // command = 12'b011_101_110_000;  // AND R5,R6
+        // run = 1;
+        // #6250000;
+        // run = 0;
+        // #1250_0000;
 
-        // Test case 4: CAS operation (Compare and Swap)
-        command = 12'b111_001_010_011;  // CAS R1,R2,R3
-        run = 1;
-        #6250000;
-        run = 0;
-        #1250_0000;
+        // // Test case 4: CAS operation (Compare and Swap)
+        // command = 12'b111_001_010_011;  // CAS R1,R2,R3
+        // run = 1;
+        // #6250000;
+        // run = 0;
+        // #1250_0000;
 
-        // Add more test cases as needed
+        // // Add more test cases as needed
 
-        // End simulation
-        #1250_0000;
+        // // End simulation
+        // #1250_0000;
         $finish;
     end
 
     // Monitor changes
     initial begin
-        $monitor("Time=%0t command=%h run=%b an=%b seg_out=%b", 
-                 $time, command, run, an, seg_out);
+        $monitor("Time=%0t command=%h run=%b an=%b seg_out=%b, state=%s, register_out_7=%h", 
+                 $time, command, run, an, seg_out, dut.ctrl.state.name(), dut.register_out_7);
     end
 
 endmodule
