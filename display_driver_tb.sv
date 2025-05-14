@@ -21,15 +21,16 @@ module tb_seven_seg_display_driver;
     initial begin
         // Initialize signals
         number = 32'h00000000;
-        #100
+        #12500000
         number = 32'hDEADBEEF;
-        #100
+        #12500000
         number = 32'h12345678;
-        #100
+        #12500000
         number = 32'h87654321;
-        #100
+        #12500000
         number = 32'hFFFFFFFF;
-        
+
+        $finish; 
     end
 
 endmodule

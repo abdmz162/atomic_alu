@@ -5,10 +5,10 @@ module seven_seg_display_driver (
     output logic [7:0] an
 );
 
-    logic [3:0] digits[7:0]; // 8 hex digits (0-F)
-    logic [2:0] current_digit; // 0 to 7
-    logic clk_800Hz;
-    logic [15:0] clk_count;
+    logic [3:0] digits [7:0]; // 8 hex digits (0-F)
+    logic [2:0] current_digit = 0; // 0 to 7
+    logic clk_800Hz = 0;
+    logic [15:0] clk_count = 0;
 
     // Direct mapping of input number to digits
     always_comb begin
@@ -22,7 +22,6 @@ module seven_seg_display_driver (
         digits[7] = number[31:28];
     end
 
-    // Clock divider to create ~800Hz refresh rate from 100MHz
     always_ff @(posedge clk) begin
         if (clk_count == 62500) begin // 100MHz / 62500 / 2 = 800Hz (for both edges)
             clk_count <= 0;
