@@ -17,7 +17,9 @@ module tb_seven_seg_display_driver;
         .an(an)
     );
 
-    initial clk = 0;
+    initial begin
+        clk = 0;
+    end
     always #5 clk = ~clk;
 
     initial begin
