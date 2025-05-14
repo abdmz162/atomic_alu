@@ -5,7 +5,7 @@ module controller(
     input logic Z,
     input logic [31:0] y,
     output logic [2:0] alu_op_code,
-    output logic [31:0] data_a, data_b,
+    output logic [31:0] data_a, data_b
 );
     // Declaring logic
     logic ready = 1;
@@ -19,10 +19,10 @@ module controller(
 
     
     //decode the commands
-    instruction = command[11:9];
-    addr1 = command[8:6]; // addresses in memory
-    addr2 = command[5:3]; // addresses in memory
-    addr3 = command[2:0]; // addresses in memory
+    assign instruction = command[11:9];
+    assign addr1 = command[8:6]; // addresses in memory
+    assign addr2 = command[5:3]; // addresses in memory
+    assign addr3 = command[2:0]; // addresses in memory
 
 
     always @(posedge syscall) begin // And ready
