@@ -11,7 +11,6 @@ module controller(
     logic ready = 1;
     logic [31:0] registers [7:0];  // 8 registers of 32-bit width
     logic [2:0] instruction,addr1,addr2,addr3;
-    logic [7:0] write_enables;
 
 
     initial begin
