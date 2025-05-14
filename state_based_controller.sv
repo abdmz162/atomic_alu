@@ -13,15 +13,25 @@ module state_based_controller(
         IDLE, DECODE, EXECUTE, WRITE_BACK, CAS_WAIT, CAS_SWAP
     } state_t;
 
-    state_t state, next_state;
+    state_t state = IDLE, next_state = IDLE;
 
     logic [31:0] registers [7:0];
     logic [2:0] instruction, addr1, addr2, addr3;
     logic [11:0] command_reg;
     logic syscall_latched;
 
+    // Initialize from file if available, otherwise use default 0s
     initial begin
         $readmemh("register_init.hex", registers);
+        // If you want to verify the initialization, you could add:
+        $display("Register 0: %h", registers[0]);
+        $display("Register 1: %h", registers[1]);
+        $display("Register 2: %h", registers[2]);
+        $display("Register 3: %h", registers[3]);
+        $display("Register 4: %h", registers[4]);
+        $display("Register 5: %h", registers[5]);
+        $display("Register 6: %h", registers[6]);
+        $display("Register 7: %h", registers[7]);
     end
 
     // Output register for register 7
