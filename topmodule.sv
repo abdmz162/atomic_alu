@@ -1,5 +1,5 @@
 module topmodule(
-    input [11:0]command,
+    input [11:0] command,
     input clk,
     input run,
     output logic [6:0] seg_out,
@@ -19,7 +19,7 @@ module topmodule(
     state_based_controller ctrl( .clk(clk), .command(command), .syscall(run), .alu_op_code(op_code), .data_a(data_a), .data_b(data_b), .y(y), .Z(Z), .register_out_7(register_out_7));
 
     alu top_alu(.a(output_a), .b(output_b), .op_code(op_code), .O(O), .C(C), .Z(Z), .N(N), .y(y));
-    
+
     seven_seg_display_driver display(.clk(clk), .number(register_out_7), .seg_out(seg_out), .an(an));
 
 
