@@ -52,9 +52,9 @@ module seven_seg_display_driver (
 
     // Anode signal (active low)
     always_comb begin
-        an = 8'b1111_1111;
-        an[current_digit] = 0; // Activate current digit
+    an = ~(8'b0000_0001 << current_digit);
     end
+
 
     // 7-segment decoder
     always_comb begin
