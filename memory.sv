@@ -5,6 +5,6 @@ module bit_32_register (
 );
 
     always_ff @(posedge clk) begin
-            d <= q;
+            q <= d;
     end
 endmodule
