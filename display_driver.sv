@@ -1,5 +1,5 @@
 module seven_seg_display_driver (
-    input logic clk,
+    input logic clk, //100MHz
     input logic rst,
     input logic load,
     input logic [31:0] number,
