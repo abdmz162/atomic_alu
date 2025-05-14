@@ -17,32 +17,38 @@ module controller(
     logic [31:0] registers [7:0];
     logic [2:0] instruction, addr1, addr2, addr3;
     logic [11:0] command_reg;
+    logic syscall_latched;
 
     initial begin
         $readmemh("register_init.hex", registers);
     end
 
+    // Latch syscall and command only when in IDLE
+    always_ff @(posedge clk) begin
+        if (state == IDLE && syscall) begin
+            syscall_latched <= 1;
+            command_reg <= command;
+        end else if (state == DECODE) begin
+            syscall_latched <= 0; // clear latch after decoding starts
+        end
+    end
+
     // Sequential logic for state transition
     always_ff @(posedge clk) begin
-        if (syscall) begin
-            state <= DECODE;
-            command_reg <= command;
-        end else begin
-            state <= next_state;
-        end
+        state <= next_state;
     end
 
     // Combinational logic for FSM
     always_comb begin
         // Defaults
-        next_state = IDLE;
+        next_state = state;
         data_a = 0;
         data_b = 0;
         alu_op_code = 3'b000;
 
         case (state)
             IDLE: begin
-                if (syscall)
+                if (syscall_latched)
                     next_state = DECODE;
                 else
                     next_state = IDLE;
