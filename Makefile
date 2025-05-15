@@ -1,61 +1,24 @@
-# Makefile for QuestaSim
-
-# Declare phony targets
-.PHONY: all compile simulate gui display_gui clean run check_hex
+# Makefile for QuestaSim Simulation with Full Hierarchy
 
 # Variables
-VLOG = vlog
-VSIM = vsim
-WORK = work
-TB = topmodule_tb           # our main testbench
-DISPLAY_TB = tb_seven_seg_display_driver  # display_driver testbench
-SRC = alu.sv controller.sv display_driver.sv memory.sv state_based_controller.sv topmodule.sv
-HEX_FILE = register_init.hex
-WAVEFORM_DO = wave.do      # Waveform configuration file
+VLOG         = vlog
+VSIM         = vsim
+WORK         = work
+TOP_MODULE   = topmodule_tb
+SOURCES      = alu.sv display_driver.sv memory.sv state_based_controller.sv topmodule.sv topmodule_tb.sv
+GUI          = -gui
+WAVE_OPTIONS = -do "add wave -r /dut/*; add wave -r /dut/ctrl/*; add wave -r /dut/top_alu/*; add wave -r /dut/display/*; add wave -r /dut/alu_a_register/*; add wave -r /dut/alu_b_register/*; run -all"
 
-# Default target (compile + simulate)
-all: check_hex compile simulate
+# Targets
+all: compile simulate
 
-# Check if hex file exists
-check_hex:
-    @if not exist $(HEX_FILE) ( \
-        echo Error: $(HEX_FILE) not found && \
-        exit 1 \
-    )
+compile:
+	$(VLOG) -work $(WORK) -sv $(SOURCES)
 
-# Create work library and compile
-compile: work $(SRC)
-    $(VLOG) -sv $(SRC)
-
-# Create work library
-work:
-    if exist $(WORK) rd /s /q $(WORK)
-    vlib work
-    vmap work work
-
-# Run simulation in console mode
 simulate:
-    $(VSIM) -c -do "run -all; quit" $(TB)
+	$(VSIM) $(GUI) $(WORK).$(TOP_MODULE) $(WAVE_OPTIONS)
 
-# Run simulation with GUI and waveform viewing
-gui: compile
-    $(VSIM) -gui -do $(WAVEFORM_DO) $(TB)
-
-# Run display driver testbench with GUI
-display_gui: compile
-    $(VSIM) -gui -do "add wave -r /*; run -all" $(DISPLAY_TB)
-
-# Create waveform configuration file
-wave.do:
-    echo add wave -r /* > $(WAVEFORM_DO)
-    echo run -all >> $(WAVEFORM_DO)
-
-# Clean generated files
 clean:
-    if exist $(WORK) rd /s /q $(WORK)
-    if exist transcript del transcript
-    if exist vsim.wlf del vsim.wlf
-    if exist $(WAVEFORM_DO) del $(WAVEFORM_DO)
+	rm -rf $(WORK) transcript vsim.wlf
 
-# Shortcut for quick simulation
-run: compile simulate
+.PHONY: all compile simulate clean
