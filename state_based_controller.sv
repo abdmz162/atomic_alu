@@ -53,13 +53,8 @@ module state_based_controller(
 
     // Combinational logic for FSM
     always_comb begin
-        // Defaults
-        next_state = state;
-        data_a = 0;
-        data_b = 0;
-        alu_op_code = 3'b000;
-
         case (state)
+        
             IDLE: begin
                 if (syscall_latched)
                     next_state = DECODE;
