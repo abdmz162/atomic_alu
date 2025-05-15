@@ -21,7 +21,7 @@ module state_based_controller(
     logic syscall_latched;
 
     initial begin
-        $readmemh("register_init.hex", registers);
+        $readmemh("register_init.mem", registers);
         // If you want to verify the initialization, you could add:
         $display("Register 0: %h", registers[0]);
         $display("Register 1: %h", registers[1]);
@@ -54,53 +54,54 @@ module state_based_controller(
     // Combinational logic for FSM
     always_comb begin
         case (state)
-        
+
             IDLE: begin
                 if (syscall_latched)
-                    next_state = DECODE;
+                    next_state <= DECODE;
                 else
-                    next_state = IDLE;
+                    next_state <= IDLE;
             end
 
             DECODE: begin
-                instruction = command_reg[11:9];
-                addr1 = command_reg[8:6];
-                addr2 = command_reg[5:3];
-                addr3 = command_reg[2:0];
+                instruction <= command_reg[11:9];
+                addr1 <= command_reg[8:6];
+                addr2 <= command_reg[5:3];
+                addr3 <= command_reg[2:0];
 
                 if (command_reg[11:9] == 3'b111)
-                    next_state = CAS_WAIT;
+                    next_state <= CAS_WAIT;
                 else
-                    next_state = EXECUTE;
+                    next_state <= EXECUTE;
             end
 
             EXECUTE: begin
-                data_a = registers[addr1];
-                data_b = registers[addr2];
-                alu_op_code = instruction;
-                next_state = WRITE_BACK;
+                data_a <= registers[addr1];
+                data_b <= registers[addr2];
+                alu_op_code <= instruction;
+                next_state <= WRITE_BACK;
             end
 
             WRITE_BACK: begin
-                registers[7] = y;
-                next_state = IDLE;
+                registers[7] <= y;
+                next_state <= IDLE;
             end
 
             CAS_WAIT: begin
-                data_a = registers[addr1];
-                data_b = registers[addr2];
-                alu_op_code = 3'b001; // Subtract
-                next_state = CAS_SWAP;
+                data_a <= registers[addr1];
+                data_b <= registers[addr2];
+                alu_op_code <= 3'b001; // Subtract
+                next_state <= CAS_SWAP;
             end
 
             CAS_SWAP: begin
                 if (Z) begin
                     logic [31:0] temp;
-                    temp = registers[addr3];
-                    registers[addr3] = registers[addr1];
-                    registers[addr1] = temp;
+                    temp <= registers[addr3];
+                    registers[addr3] <= registers[addr1];
+                    registers[addr1] <= temp;
                 end
-                next_state = IDLE;
+            
+                next_state <= IDLE;
             end
         endcase
     end
