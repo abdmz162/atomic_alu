@@ -1,4 +1,4 @@
-# Makefile for QuestaSim Simulation with Full Hierarchy
+# Makefile for QuestaSim Simulation
 
 # Variables
 VLOG         = vlog
@@ -7,7 +7,7 @@ WORK         = work
 TOP_MODULE   = topmodule_tb
 SOURCES      = alu.sv display_driver.sv memory.sv state_based_controller.sv topmodule.sv topmodule_tb.sv
 GUI          = -gui
-WAVE_OPTIONS = -do "add wave -r /dut/*; add wave -r /dut/ctrl/*; add wave -r /dut/top_alu/*; add wave -r /dut/display/*; add wave -r /dut/alu_a_register/*; add wave -r /dut/alu_b_register/*; run -all"
+WAVE_OPTIONS = -do "add wave -r /dut; run -all"
 
 # Targets
 all: compile simulate
@@ -19,6 +19,7 @@ simulate:
 	$(VSIM) $(GUI) $(WORK).$(TOP_MODULE) $(WAVE_OPTIONS)
 
 clean:
-	rm -rf $(WORK) transcript vsim.wlf
+	rmdir /S /Q work
+	del /Q -rf transcript vsim.wlf
 
 .PHONY: all compile simulate clean
