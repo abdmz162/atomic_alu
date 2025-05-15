@@ -10,7 +10,6 @@ module topmodule(
     logic [31:0] data_a, data_b;
     logic [31:0] output_a, output_b;
     logic [2:0] op_code;
-    logic O, C, Z, N;
     logic [31:0] y;
     logic [31:0] register_out_7;
     
