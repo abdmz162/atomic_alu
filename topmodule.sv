@@ -4,7 +4,7 @@ module topmodule(
     input run,
     output logic [6:0] seg_out,
     output logic [7:0] an,
-    output logic O, C, Z, N,
+    output logic O, C, Z, N
     );
 
     logic [31:0] data_a, data_b;
